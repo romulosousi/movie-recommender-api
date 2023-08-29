@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy.orm import Session 
 
 from db.models import Movie, Ratings, User
@@ -5,7 +6,7 @@ from db.models import Movie, Ratings, User
 class MovieRepository:
 
     @staticmethod
-    def find_all(db: Session) -> list[Movie]:
+    def find_all(db: Session) -> List[Movie]:
         return db.query(Movie).all()
     
     @staticmethod
@@ -20,7 +21,7 @@ class MovieRepository:
 class UserRepository:
 
     @staticmethod
-    def find_all(db: Session) -> list[User]:
+    def find_all(db: Session) -> List[User]:
         return db.query(User).all()
     
     @staticmethod
@@ -35,9 +36,9 @@ class UserRepository:
 class RatingsRepository:
 
     @staticmethod
-    def find_by_userid(db: Session, id: int) -> [Ratings]:
+    def find_by_userid(db: Session, id: int) -> List[Ratings]:
         return db.query(Ratings).filter(Ratings.userId == id).all()
     
     @staticmethod
-    def find_by_movieid(db: Session, id: int) -> [Ratings]:
+    def find_by_movieid(db: Session, id: int) -> List[Ratings]:
         return db.query(Ratings).filter(Ratings.movieId == id).all()
