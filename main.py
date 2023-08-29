@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session 
@@ -20,7 +20,7 @@ app = FastAPI(
     license_info=None
 )
 
-@app.get("/api/movies", response_model=list[MovieResponse],
+@app.get("/api/movies", response_model=List[MovieResponse],
          name="Get all movies",
          description="Return all movies from database.")
 def find_all_movies(db: Session = Depends(get_db)):
@@ -41,7 +41,7 @@ def find_movie_by_id(id: int, db: Session = Depends(get_db)):
     
     return MovieResponse.from_orm(movie)
 
-@app.get("/api/users", response_model=list[UserResponse],
+@app.get("/api/users", response_model=List[UserResponse],
          name="Get all users",
          description="Return all users from database.")
 def find_all_users(db: Session = Depends(get_db)):
@@ -63,7 +63,7 @@ def find_user_by_id(id: int, db: Session = Depends(get_db)):
     return UserResponse.from_orm(user)
 
 
-@app.get("/api/movies_by_user/{user_id}", response_model=list[RatingsResponse],
+@app.get("/api/movies_by_user/{user_id}", response_model=List[RatingsResponse],
          name="Get all movies rated by user",
          description="Return all movies that was rated by a user with the rating.")
 def find_movies_by_user(user_id: int, db: Session = Depends(get_db)):
@@ -78,7 +78,7 @@ def find_movies_by_user(user_id: int, db: Session = Depends(get_db)):
     return [RatingsResponse.from_orm(rating) for rating in ratings]
 
 
-@app.get("/api/users_by_movie/{movie_id}", response_model=list[RatingsResponse],
+@app.get("/api/users_by_movie/{movie_id}", response_model=List[RatingsResponse],
          name="Get all users that rated a movie",
          description="Return all users that rated a movie with the rating.")
 def find_users_by_movie(movie_id: int, db: Session = Depends(get_db)):
