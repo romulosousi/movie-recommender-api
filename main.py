@@ -8,6 +8,8 @@ from db.database import engine, Base, get_db
 from db.repositories import MovieRepository, UserRepository, RatingsRepository
 from db.schemas import MovieRequest, MovieResponse, UserRequest, UserResponse, RatingsResponse, RatingsRequest
 
+from ga.mygenetic import MyGeneticAlgorithm
+
 Base.metadata.create_all(bind=engine)
 
 
@@ -99,6 +101,21 @@ def find_users_by_movie(movie_id: int, db: Session = Depends(get_db)):
 def get_recommender(user_id: int, db: Session = Depends(get_db)):
 
     return "Not implemented yet"
+
+@app.get("/api/run_recommender/")
+def run_recommender(db: Session = Depends(get_db)):
+
+    movies = MovieRepository.find_all(db)
+    total_movies = len(movies)
+    my_genetic = MyGeneticAlgorithm(10, 100, 0.9, 0.05, total_movies)
+    my_genetic.eval()
+    population = my_genetic.get_population()
+    log = my_genetic.get_log()
+    best = my_genetic.get_best()
+
+    return {'population': population, 'logs': log, 'best': best}
+
+
 
 
 if __name__ == '__main__':
