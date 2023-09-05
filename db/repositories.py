@@ -45,3 +45,6 @@ class RatingsRepository:
     @staticmethod
     def find_by_movieid(db: Session, id: int) -> List[Ratings]:
         return db.query(Ratings).filter(Ratings.movieId == id).all()
+    
+    def find_by_movieid_list(db: Session, movies_ids: list) -> List[Ratings]:
+        return db.query(Ratings).filter(Ratings.movieId.in_(movies_ids)).all()

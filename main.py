@@ -146,7 +146,9 @@ def recommender(configuration: GeneticConfiguration, db: Session = Depends(get_d
         configuration.max_generations, 
         configuration.size_hall_of_fame, 
         (1.0, ),
-        configuration.seed)
+        configuration.seed,
+        db
+        )
     
     my_genetic.eval()
     population = my_genetic.get_population()
