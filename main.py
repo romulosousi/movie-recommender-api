@@ -106,33 +106,12 @@ def find_users_by_movie(movie_id: int, db: Session = Depends(get_db)):
     return [RatingsResponse.from_orm(rating) for rating in ratings]
 
 
-@app.get("/api/recommender/{user_id}",
-         name="Get a recommendation for a user.",
-         description="Create a recommendation for a especific user.")
-def get_recommender(user_id: int, db: Session = Depends(get_db)):
-
-    return "Not implemented yet"
-
-@app.get("/api/run_recommender/")
-def run_recommender(db: Session = Depends(get_db)):
-
-    movies = MovieRepository.find_all(db)
-    total_movies = len(movies)
-    my_genetic = MyGeneticAlgorithm(10, 100, 0.9, 0.05, total_movies)
-    my_genetic.eval()
-    population = my_genetic.get_population()
-    log = my_genetic.get_log()
-    best = my_genetic.get_best()
-
-    return {'population': population, 'logs': log, 'best': best}
-    
-
-@app.post("/api/recommender/",
+@app.post("/api/recommender",
           name="Generate recommender to user",
           description="Train a genetic algorithm to generate a recommender to user")
 def recommender(configuration: GeneticConfiguration, db: Session = Depends(get_db)):
     movies = MovieRepository.find_all(db)
-    total_movies = len(movies)
+    all_ids = [movie.movieId for movie in movies]
 
     p_crossover = configuration.p_crossover / 100
     p_mutatioin = configuration.p_mutation / 100
@@ -142,7 +121,7 @@ def recommender(configuration: GeneticConfiguration, db: Session = Depends(get_d
         configuration.population_size, 
         p_crossover,
         p_mutatioin,
-        total_movies, 
+        all_ids, 
         configuration.max_generations, 
         configuration.size_hall_of_fame, 
         (1.0, ),

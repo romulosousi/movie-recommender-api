@@ -5,7 +5,7 @@ import numpy as np
 
 class Algorithm:
 
-    def __init__(self, individual_size, population_size, p_crossover, p_mutation,  total_items, max_generations=100, size_hall_of_fame=1, fitness_weights=(1.0,), seed=42) -> None:
+    def __init__(self, individual_size, population_size, p_crossover, p_mutation,  all_ids, max_generations=100, size_hall_of_fame=1, fitness_weights=(1.0,), seed=42) -> None:
 
         self.POPULATION_SIZE = population_size
         self.P_CROSSOVER = p_crossover
@@ -21,7 +21,7 @@ class Algorithm:
 
         self.toolbox = base.Toolbox()
 
-        self.toolbox.register("attribute", random.randint, 0, total_items - 1)
+        self.toolbox.register("attribute", random.choice, all_ids)
         self.toolbox.register("individual", tools.initRepeat, creator.Individual, self.toolbox.attribute, individual_size)
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 

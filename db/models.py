@@ -11,6 +11,8 @@ class Movie(Base):
     title: str = Column(String(200), nullable=False)
     year: int = Column(Integer, nullable=True)
     genres: str = Column(String(200), nullable=True)
+    url_poster: str = Column(String(300), nullable=True)
+    imdbId: str = Column(String(10), nullable=True)
 
 
 class Ratings(Base):

@@ -5,6 +5,8 @@ class MovieBase(BaseModel):
     title: str
     year: Optional[int] = None
     genres: str
+    url_poster: Optional[str] = None
+    imdbId: Optional[str] = None
 
 class MovieRequest(MovieBase):
     ...

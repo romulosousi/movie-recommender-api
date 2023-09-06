@@ -11,7 +11,7 @@ from db.repositories import MovieRepository, RatingsRepository
 
 class MyGeneticAlgorithm(Algorithm):
 
-    def __init__(self, individual_size, population_size, p_crossover, p_mutation, total_items, max_generations=100, size_hall_of_fame=1, fitness_weights=(1.0, ), seed=42, db=None) -> None:
+    def __init__(self, individual_size, population_size, p_crossover, p_mutation, all_ids, max_generations=100, size_hall_of_fame=1, fitness_weights=(1.0, ), seed=42, db=None) -> None:
 
 
         super().__init__(
@@ -19,13 +19,15 @@ class MyGeneticAlgorithm(Algorithm):
             population_size, 
             p_crossover, 
             p_mutation, 
-            total_items, 
+            all_ids, 
             max_generations, 
             size_hall_of_fame, 
             fitness_weights, 
             seed)
         
         self.db = db
+        self.all_ids = all_ids
+        
 
     
     def evaluate(self, individual):
@@ -33,11 +35,14 @@ class MyGeneticAlgorithm(Algorithm):
         if len(individual) != len(set(individual)):
             return (0.0, )
         
-        ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
+        if len(list(set(individual) - set(self.all_ids))) > 0:
+            return (0.0, )
         
-        mean_ = np.mean([obj_.rating for obj_ in ratings_movies])
+        ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
 
-        if math.isnan(mean_):
+        if len(ratings_movies) > 0:
+            mean_ = np.mean([obj_.rating for obj_ in ratings_movies])
+        else:
             mean_ = 0.0
 
         return (mean_, )
