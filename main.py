@@ -117,6 +117,7 @@ def recommender(configuration: GeneticConfiguration, db: Session = Depends(get_d
     p_mutatioin = configuration.p_mutation / 100
     
     my_genetic = MyGeneticAlgorithm(
+        configuration.query_search,
         configuration.individual_size, 
         configuration.population_size, 
         p_crossover,
@@ -130,7 +131,6 @@ def recommender(configuration: GeneticConfiguration, db: Session = Depends(get_d
         )
     
     my_genetic.eval()
-    population = my_genetic.get_population()
     log = my_genetic.get_log()
     best = my_genetic.get_best()
 
