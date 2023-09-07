@@ -11,7 +11,7 @@ from db.repositories import MovieRepository, RatingsRepository
 
 class MyGeneticAlgorithm(Algorithm):
 
-    def __init__(self, individual_size, population_size, p_crossover, p_mutation, all_ids, max_generations=100, size_hall_of_fame=1, fitness_weights=(1.0, ), seed=42, db=None) -> None:
+    def __init__(self, query_search, individual_size, population_size, p_crossover, p_mutation, all_ids, max_generations=100, size_hall_of_fame=1, fitness_weights=(1.0, ), seed=42, db=None) -> None:
 
 
         super().__init__(
@@ -27,6 +27,7 @@ class MyGeneticAlgorithm(Algorithm):
         
         self.db = db
         self.all_ids = all_ids
+        self.query_search = query_search
         
 
     
@@ -46,12 +47,4 @@ class MyGeneticAlgorithm(Algorithm):
             mean_ = 0.0
 
         return (mean_, )
-
-
-if __name__ == "__main__":
-
-
-
-    genetic = MyGeneticAlgorithm(10, 100, 0.9, 0.05, 400)
-    genetic.eval()
 
