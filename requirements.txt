@@ -1,3 +1,4 @@
 fastapi[all]
 SQLAlchemy[all]
 uvicorn[all]
+deap[all]

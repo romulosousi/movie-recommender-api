@@ -17,6 +17,9 @@ class MovieRepository:
     def exists_by_id(db: Session, id: int) -> bool:
         return db.query(Movie).filter(Movie.movieId == id).first() is not None
     
+    def find_all_ids(db: Session, ids: list) -> List[Movie]:
+        return db.query(Movie).filter(Movie.movieId.in_(ids)).all()
+    
 
 class UserRepository:
 
@@ -42,3 +45,6 @@ class RatingsRepository:
     @staticmethod
     def find_by_movieid(db: Session, id: int) -> List[Ratings]:
         return db.query(Ratings).filter(Ratings.movieId == id).all()
+    
+    def find_by_movieid_list(db: Session, movies_ids: list) -> List[Ratings]:
+        return db.query(Ratings).filter(Ratings.movieId.in_(movies_ids)).all()
