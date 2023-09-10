@@ -13,10 +13,6 @@ class MovieRepository:
     def find_by_id(db: Session, id: int) -> Movie:
         return db.query(Movie).filter(Movie.movieId == id).first()
     
-    @staticmethod
-    def exists_by_id(db: Session, id: int) -> bool:
-        return db.query(Movie).filter(Movie.movieId == id).first() is not None
-    
     def find_all_ids(db: Session, ids: list) -> List[Movie]:
         return db.query(Movie).filter(Movie.movieId.in_(ids)).all()
     

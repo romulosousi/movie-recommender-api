@@ -7,7 +7,7 @@ import numpy as np
 import math 
 
 from db.database import get_db
-from db.repositories import MovieRepository, RatingsRepository
+from db.repositories import UserRepository, MovieRepository, RatingsRepository
 
 class MyGeneticAlgorithm(Algorithm):
 

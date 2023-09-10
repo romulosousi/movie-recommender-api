@@ -29,7 +29,7 @@ uvicorn main:app --reload
 
 Por padrão, a API estará disponível no link: https://127.0.0.1:8000/.
 
-## Doumentação
+## Documentação
 
 Após a instalação, toda a documentação da API pode ser encontrada no endereço: https://127.0.0.1/docs/. Os `endpoints` implementados são: 
 
@@ -40,6 +40,27 @@ Após a instalação, toda a documentação da API pode ser encontrada no endere
 * `/api/movies_by_user/{user_id}`: retorna todos os filmes que foram avaliados por um usuário (`{user_id}`).
 * `/api/users_by_movie/{movie_id}`: retorna todos os usuários que avaliaram um determinado filme (`{movie_id}`).
 * `/api/recommender`: executa o processo de evolução e retorna uma recomendação para um determinado usuário. 
+
+A implementação de cada rota dessa está dentrodo arquivo `main.py`. Lá é possível ver quais métodos utilizados para extrair cada uma das informações e como utiliza-los.
+
+Os métodos para extrair informações do banco de dados está em `db.repositories` a partir das classes específicas para usuários, filmes e ratings. São eles:
+
+### `MovieRepository`
+
+* `find_all`: retorna todos os filmes da base.
+* `find_by_id`: retorna um filme dado um id.
+* `find_all_ids`: retorna todos os filmes de uma lista de ids.
+
+### `UserRepository`
+
+* `find_all`: retorna todos os usuários da base. 
+* `find_by_id`: retorna um usuário dado um id.
+
+### `RatingsRepository`
+
+* `find_by_userdid`: retorna os ratings dados por usuário dado seu id. 
+* `find_by_movieid`: retorna os ratings que um dado filme recebeu dado seu id.
+* `find_by_movieid_list`: retorna todos os ratings dos filmes que estão em uma lista de ids. 
 
 ## Banco de Dados
 
@@ -104,7 +125,7 @@ O algoritmo Genético é executado pelo _endpoint_ `/api/recommender` que é ace
 * **p_crossover**: probabilidade de crossover (Formato: 0 a 100);
 * **p_mutation**: probabilidade de crosover (Formato: 0 a 100);
 * **max_generation**: número máximo de gerações da evolução;
-* **size_hall_of_fame**: quantidade de bons indivíduos que serão armazenados para o resultado final; 
+* **size_hall_of_fame**: quantidade de bons indivíduos que serão armazenados para o resultado final. Isso não é elitismo. O elitismo não está implementado ainda.
 * **seed**: seed do aleatório.
 
 O algoritmo esá implementado no arquivo [ga/algorithm.py](ga/algorithm.py) que utiliza a biblioteca DEAP e o método `eaSimple` para executar uma versão simples do algoritmo de evolução. 
