@@ -31,20 +31,22 @@ class MyGeneticAlgorithm(Algorithm):
         
 
     
-    def evaluate(self, individual):
 
-        if len(individual) != len(set(individual)):
-            return (0.0, )
-        
-        if len(list(set(individual) - set(self.all_ids))) > 0:
-            return (0.0, )
-        
-        ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
 
-        if len(ratings_movies) > 0:
-            mean_ = np.mean([obj_.rating for obj_ in ratings_movies])
-        else:
-            mean_ = 0.0
+def evaluate_recomendacao(self, individual, user_ratings):
 
-        return (mean_, )
+    if len(individual) != len(set(individual)):
+        return (0.0, )
+    
+    if len(list(set(individual) - set(self.all_ids))) > 0:
+        return (0.0, )
 
+    ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
+
+    if len(ratings_movies) > 0:
+        mean_ = np.mean([obj_.rating for obj_ in ratings_movies])
+    else:
+        mean_ = 0.0
+
+
+    user_mean = np.mean(user_ratings)
